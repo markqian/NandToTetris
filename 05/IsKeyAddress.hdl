@@ -1,0 +1,10 @@
+CHIP IsKeyAddress {
+
+     IN in[15];
+     OUT out;
+
+     PARTS:
+     And(a=in[14], b=in[14], out=out1);     
+     And(a=in[13], b=in[13], out=out2);     
+     And(a=out1, b=out2, out=out);
+}

@@ -1,0 +1,10 @@
+
+CHIP Incif {
+     IN a[16], b;
+     OUT out[16];
+
+     PARTS:     
+     Inc16(in=a, out=w);
+     Mux16(a=a,b=w,sel=b,out=out);
+
+}

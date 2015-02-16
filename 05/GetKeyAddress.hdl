@@ -1,0 +1,25 @@
+
+CHIP GetKeyAddress {
+     IN in;
+     OUT keyaddress[14];
+
+     PARTS:
+     
+     Xor(a=in[0],b=in[0],out=zero);
+     Not(in=zero,out=one);
+
+     Or(a=zero, b=zero, out=keyaddress[0]);  
+     Or(a=zero, b=zero, out=keyaddress[1]);  
+     Or(a=zero, b=zero, out=keyaddress[2]);  
+     Or(a=zero, b=zero, out=keyaddress[3]);  
+     Or(a=zero, b=zero, out=keyaddress[4]);  
+     Or(a=zero, b=zero, out=keyaddress[5]);  
+     Or(a=zero, b=zero, out=keyaddress[6]);  
+     Or(a=zero, b=zero, out=keyaddress[7]);  
+     Or(a=zero, b=zero, out=keyaddress[8]);  
+     Or(a=zero, b=zero, out=keyaddress[9]);  
+     Or(a=zero, b=zero, out=keyaddress[10]);  
+     Or(a=zero, b=zero, out=keyaddress[11]);  
+     Or(a=zero, b=zero, out=keyaddress[12]);  
+     Or(a=one, b=one, out=keyaddress[13]);  
+ }

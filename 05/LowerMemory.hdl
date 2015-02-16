@@ -1,0 +1,9 @@
+CHIP LowerMemory {
+
+     IN in[16], load, address[14];
+     OUT out[16];
+
+     PARTS:
+     RAM16K(in=in, load=load, address=address, out=out);
+
+}

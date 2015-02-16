@@ -1,0 +1,39 @@
+CHIP GetHighLow15 {
+
+     IN in[15];
+     OUT hi, low1[14], low2[13];
+
+     PARTS:
+
+     Or(a=in[14], b=in[14], out=hi);
+
+     Or(a=in[0], b=in[0], out=low1[0]);
+     Or(a=in[1], b=in[1], out=low1[1]);
+     Or(a=in[2], b=in[2], out=low1[2]);
+     Or(a=in[3], b=in[3], out=low1[3]);
+     Or(a=in[4], b=in[4], out=low1[4]);
+     Or(a=in[5], b=in[5], out=low1[5]);
+     Or(a=in[6], b=in[6], out=low1[6]);
+     Or(a=in[7], b=in[7], out=low1[7]);
+     Or(a=in[8], b=in[8], out=low1[8]);
+     Or(a=in[9], b=in[9], out=low1[9]);
+     Or(a=in[10], b=in[10], out=low1[10]);
+     Or(a=in[11], b=in[11], out=low1[11]);
+     Or(a=in[12], b=in[12], out=low1[12]);
+     Or(a=in[13], b=in[13], out=low1[13]);
+
+     Or(a=in[0], b=in[0], out=low2[0]);
+     Or(a=in[1], b=in[1], out=low2[1]);
+     Or(a=in[2], b=in[2], out=low2[2]);
+     Or(a=in[3], b=in[3], out=low2[3]);
+     Or(a=in[4], b=in[4], out=low2[4]);
+     Or(a=in[5], b=in[5], out=low2[5]);
+     Or(a=in[6], b=in[6], out=low2[6]);
+     Or(a=in[7], b=in[7], out=low2[7]);
+     Or(a=in[8], b=in[8], out=low2[8]);
+     Or(a=in[9], b=in[9], out=low2[9]);
+     Or(a=in[10], b=in[10], out=low2[10]);
+     Or(a=in[11], b=in[11], out=low2[11]);
+     Or(a=in[12], b=in[12], out=low2[12]);
+
+}

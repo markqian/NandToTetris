@@ -1,0 +1,11 @@
+
+CHIP DecodeD {
+
+     IN in[16];
+     OUT d1, d2, d3;
+
+     PARTS:
+     Or(a=in[5], b=in[5], out=d1);     	
+     Or(a=in[4], b=in[4], out=d2);     	
+     Or(a=in[3], b=in[3], out=d3);     	
+}

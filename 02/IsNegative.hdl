@@ -1,0 +1,10 @@
+
+CHIP IsNegative {
+    IN in[16];
+    OUT out;
+
+    PARTS:
+    Xor(a=in[0], b=in[0], out=zero);
+    Not(in=zero, out=one);
+    And(a=in[15],b=one,out=out);
+}

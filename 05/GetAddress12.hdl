@@ -1,0 +1,13 @@
+CHIP GetAddress12 {
+     IN in[16];
+     OUT out[12];
+     
+     PARTS:
+
+     Or(a=in[0], b=in[0], out=out[0]);	
+
+
+
+
+
+}

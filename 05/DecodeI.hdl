@@ -1,0 +1,11 @@
+
+
+CHIP DecodeI {
+
+     IN in[16];
+     OUT i;
+
+     PARTS:
+     Or(a=in[15], b=in[15], out=i);
+
+}

@@ -1,0 +1,9 @@
+CHIP DecodeA {
+     IN in[16];
+     OUT a;
+
+     PARTS:
+     Or(a=in[12], b=in[12], out=a);
+
+
+}

@@ -1,0 +1,102 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/05/CPU.hdl
+
+/**
+ * The Central Processing unit (CPU).
+ * Consists of an ALU and a set of registers, designed to fetch and 
+ * execute instructions written in the Hack machine language.
+ * In particular, functions as follows:
+ * Executes the inputted instruction according to the Hack machine 
+ * language specification. The D and A in the language specification
+ * refer to CPU-resident registers, while M refers to the external
+ * memory location addressed by A, i.e. to Memory[A]. The inM input 
+ * holds the value of this location. If the current instruction needs 
+ * to write a value to M, the value is placed in outM, the address 
+ * of the target location is placed in the addressM output, and the 
+ * writeM control bit is asserted. (When writeM=0, any value may 
+ * appear in outM). The outM and writeM outputs are combinational: 
+ * they are affected instantaneously by the execution of the current 
+ * instruction. The addressM and pc outputs are clocked: although they 
+ * are affected by the execution of the current instruction, they commit 
+ * to their new values only in the next time unit. If reset=1 then the 
+ * CPU jumps to address 0 (i.e. sets pc=0 in next time unit) rather 
+ * than to the address resulting from executing the current instruction. 
+ */
+
+CHIP CPU {
+
+    IN  inM[16],         // M value input  (M = contents of RAM[A])
+        instruction[16], // Instruction for execution
+        reset;           // Signals whether to re-start the current
+                         // program (reset=1) or continue executing
+                         // the current program (reset=0).
+
+    OUT outM[16],        // M value output
+        writeM,          // Write into M? 
+        addressM[15],    // Address in data memory (of M)
+        pc[15];          // address of next instruction
+
+    PARTS:
+    Xor(a=inM[0],b=inM[0], out=zero);
+    Not(in=zero, out=one);
+
+    DecodeI(in=instruction, i=i);
+    DecodeA(in=instruction, a=a);
+    DecodeC(in=instruction, c1=c1,c2=c2,c3=c3,c4=c4,c5=c5,c6=c6);
+    DecodeD(in=instruction, d1=d1,d2=d2,d3=d3);
+    DecodeJ(in=instruction, j1=j1,j2=j2,j3=j3);
+
+    Not(in=i, out=noti);
+    Or(a=noti, b=noti, out=selA1);
+    And(a=i, b=d1, out=selA2);
+    Mux(a=selA1, b=zero, sel=selA2, out=selA);    
+    Mux16(a=output, b=instruction, sel=selA, out=out1);
+
+    Or(a=selA1, b=selA2, out=loadA);
+    ARegister(in=out1, load=loadA, out=outA);    			  
+
+    Mux16(a=outA, b=inM, sel=a, out=outAM);
+    
+    Or15(a=outA, b=outA, out=addressM);
+
+    And(a=i, b=d2, out=loadD);
+    DRegister(in=output, load=loadD, out=outD);
+    ALU(x=outD, y=outAM, zx=c1, nx=c2, zy=c3, ny=c4, f=c5, no=c6, zr=JEQ, ng=JLT, out=output);
+    
+    Or16(a=output, b=output, out=outM);    
+
+    Or(a=JEQ, b=JLT, out=JLE);
+    Not(in=JLE, out=JGT);
+    Or(a=JEQ, b=JGT, out=JGE);
+    Or(a=JGT, b=JLT, out=JNE);
+    Or(a=one, b=one, out=JMP);      
+
+    DecodeJUMP(a=j1,b=j2,c=j3,out=selJUMP);
+
+    DMux8Way(in=one,sel=selJUMP,a=NULL,b=JGT1,c=JEQ1,d=JGE1,e=JLT1,f=JNE1,g=JLE1,h=JMP1);
+
+    And(a=JEQ1, b=JEQ, out=JEQ2);
+    And(a=JGT1, b=JGT, out=JGT2);
+    And(a=JGE1, b=JGE, out=JGE2);
+    And(a=JLT1, b=JLT, out=JLT2);
+    And(a=JNE1, b=JNE, out=JNE2);
+    And(a=JLE1, b=JLE, out=JLE2);
+    And(a=JMP1, b=JMP, out=JMP2);
+
+    Or(a=JEQ2, b=JGT2, out=r1);
+    Or(a=r1, b=JGE2, out=r2);
+    Or(a=r2, b=JLT2, out=r3);
+    Or(a=r3, b=JNE2, out=r4);
+    Or(a=r4, b=JLE2, out=r5);
+    Or(a=r5, b=JMP2, out=r6);
+    And(a=r6, b=i, out=r7);
+    Not(in=NULL, out=noNULL);
+    And(a=noNULL, b=r7, out=selJ);
+
+    PC(in=outA, load=selJ, inc=one, reset=reset, out=outpc);
+    
+    Or15(a=outpc, b=outpc, out=pc);
+    And(a=d3,b=i,out=writeM);
+}

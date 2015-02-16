@@ -1,0 +1,16 @@
+
+CHIP DecodeC {
+
+     IN in[16];
+     OUT c1, c2, c3, c4, c5, c6;
+     
+     PARTS:
+
+     Or(a=in[11], b=in[11], out=c1);     	
+     Or(a=in[10], b=in[10], out=c2);     	
+     Or(a=in[9], b=in[9], out=c3);     	
+     Or(a=in[8], b=in[8], out=c4);     	
+     Or(a=in[7], b=in[7], out=c5);
+     Or(a=in[6], b=in[6], out=c6);     	
+
+}

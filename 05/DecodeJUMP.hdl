@@ -1,0 +1,12 @@
+
+CHIP DecodeJUMP {
+
+     IN a, b, c;
+     OUT out[3];
+
+     PARTS:
+
+     Or(a=a, b=a, out=out[2]);
+     Or(a=b, b=b, out=out[1]);
+     Or(a=c, b=c, out=out[0]);
+}

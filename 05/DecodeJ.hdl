@@ -1,0 +1,12 @@
+
+CHIP DecodeJ {
+
+     IN in[16];
+     OUT j1, j2, j3;
+
+     PARTS:
+     Or(a=in[2], b=in[2], out=j1);     	
+     Or(a=in[1], b=in[1], out=j2);     	
+     Or(a=in[0], b=in[0], out=j3);     	
+
+}

@@ -1,0 +1,72 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor.
+ * {a,b,c,d,e,f,g,h} = {in,0,0,0,0,0,0,0} if sel==000
+ *                     {0,in,0,0,0,0,0,0} if sel==001
+ *                     etc.
+ *                     {0,0,0,0,0,0,0,in} if sel==111
+ */
+
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+    // (notsel2 & notsel1 & notsel0 & (in V 0)) 
+    // (notsel2 & notsel1 & sel0 & (in V 0)) 
+    // (notsel2 & sel1 & notsel0 & (in V 0)) 
+    // (notsel2 & sel1 & sel0 & (in V 0)) 
+    // (sel2 & notsel1 & notsel0 & (in V 0)) 
+    // (sel2 & notsel1 & sel0 & (in V 0)) 
+    // (sel2 & sel1 & notsel0 & (in V 0)) 
+    // (sel2 & sel1 & sel0 & (in V 0)) 
+
+    Not(in=sel[0], out=notsel0);    
+    Not(in=sel[1], out=notsel1);    
+    Not(in=sel[2], out=notsel2);    
+
+    And(a=notsel0, b=notsel1, out=w1);
+    And(a=w1, b=notsel2, out=w2);
+    Or(a=in, b=in, out=a1);
+    And(a=w2, b=a1, out=a); 				    
+
+    And(a=sel[0], b=notsel1, out=w3);
+    And(a=w3, b=notsel2, out=w4);
+    Or(a=in, b=in, out=b1);
+    And(a=w4, b=b1, out=b); 				    
+
+    And(a=notsel0, b=sel[1], out=w5);
+    And(a=w5, b=notsel2, out=w6);
+    Or(a=in, b=in, out=c1);
+    And(a=w6, b=c1, out=c); 				    
+
+    And(a=sel[0], b=sel[1], out=w7);
+    And(a=w7, b=notsel2, out=w8);
+    Or(a=in, b=in, out=d1);
+    And(a=w8, b=d1, out=d); 
+
+    And(a=sel[2], b=notsel1, out=w9);
+    And(a=w9, b=notsel0, out=w10);
+    Or(a=in, b=in, out=e1);
+    And(a=w10, b=e1, out=e); 
+
+    And(a=sel[2], b=notsel1, out=w11);
+    And(a=w11, b=sel[0], out=w12);
+    Or(a=in, b=in, out=f1);
+    And(a=w12, b=f1, out=f); 
+
+    And(a=sel[2], b=sel[1], out=w13);
+    And(a=w13, b=notsel0, out=w14);
+    Or(a=in, b=in, out=g1);
+    And(a=w14, b=g1, out=g); 
+
+    And(a=sel[2], b=sel[1], out=w15);
+    And(a=w15, b=sel[0], out=w16);
+    Or(a=in, b=in, out=h1);
+    And(a=w16, b=h1, out=h); 
+}
