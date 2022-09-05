@@ -1,0 +1,17 @@
+
+CHIP High3Low6Bits {
+     IN in[9];
+     OUT higher[3], lower[6];
+
+     PARTS:
+     Or(a=in[8],b=in[8],out=higher[2]);     
+     Or(a=in[7],b=in[7],out=higher[1]);     
+     Or(a=in[6],b=in[6],out=higher[0]);      
+     Or(a=in[5],b=in[5],out=lower[5]);     
+     Or(a=in[4],b=in[4],out=lower[4]);     
+     Or(a=in[3],b=in[3],out=lower[3]);     
+     Or(a=in[2],b=in[2],out=lower[2]);     
+     Or(a=in[1],b=in[1],out=lower[1]);     
+     Or(a=in[0],b=in[0],out=lower[0]);     
+
+}

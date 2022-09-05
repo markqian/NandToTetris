@@ -15,11 +15,17 @@ CHIP RAM64 {
     OUT out[16];
 
     PARTS:
+    // get zeroes
     Xor(a=in[0],b=in[0],out=zero);
+    // get ones
     Not(in=zero,out=one);
 
+    // get 3 high bits and 3 low bits
     HighLowBits3(in=address,higher=higher3,lower=lower3);
+    // select each high bit into the designated outputs
     DMux8Way(in=one,sel=higher3,a=rr0,b=rr1,c=rr2,d=rr3,e=rr4,f=rr5,g=rr6,h=rr7);
+
+    // determine where to load the values
     And(a=rr0, b=load, out=load0);
     And(a=rr1, b=load, out=load1);
     And(a=rr2, b=load, out=load2);
@@ -29,13 +35,14 @@ CHIP RAM64 {
     And(a=rr6, b=load, out=load6);
     And(a=rr7, b=load, out=load7);
 
-    RAM8(in=in, load=load0, address=lower3, out=out0);
-    RAM8(in=in, load=load1, address=lower3, out=out1);
-    RAM8(in=in, load=load2, address=lower3, out=out2);
-    RAM8(in=in, load=load3, address=lower3, out=out3);
-    RAM8(in=in, load=load4, address=lower3, out=out4);
-    RAM8(in=in, load=load5, address=lower3, out=out5);
-    RAM8(in=in, load=load6, address=lower3, out=out6);
-    RAM8(in=in, load=load7, address=lower3, out=out7);
+
+    RAM8(in=in, load=load0, address=lower3, out=out0); // 0 - 7
+    RAM8(in=in, load=load1, address=lower3, out=out1); // 8 - 15
+    RAM8(in=in, load=load2, address=lower3, out=out2); // 16 - 23
+    RAM8(in=in, load=load3, address=lower3, out=out3); // 24 - 31
+    RAM8(in=in, load=load4, address=lower3, out=out4); // 32 - 39
+    RAM8(in=in, load=load5, address=lower3, out=out5); // 40 - 47
+    RAM8(in=in, load=load6, address=lower3, out=out6); // 48 - 55
+    RAM8(in=in, load=load7, address=lower3, out=out7); // 56 - 63
     Mux8Way16(a=out0,b=out1,c=out2,d=out3,e=out4,f=out5,g=out6,h=out7,sel=higher3,out=out);
 }

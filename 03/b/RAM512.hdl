@@ -15,6 +15,28 @@ CHIP RAM512 {
     OUT out[16];
 
     PARTS:
-    
+    Xor(a=in[0],b=in[0],out=zero);
+    Not(in=zero,out=one);
+
+    High3Low6Bits(in=address,higher=higher3,lower=lower6);
+    DMux8Way(in=one,sel=higher3,a=rr0,b=rr1,c=rr2,d=rr3,e=rr4,f=rr5,g=rr6,h=rr7);
+    And(a=rr0, b=load, out=load0);
+    And(a=rr1, b=load, out=load1);
+    And(a=rr2, b=load, out=load2);
+    And(a=rr3, b=load, out=load3);
+    And(a=rr4, b=load, out=load4);
+    And(a=rr5, b=load, out=load5);
+    And(a=rr6, b=load, out=load6);
+    And(a=rr7, b=load, out=load7);
+
+    RAM64(in=in, load=load0, address=lower6, out=out0); // 0 - 63
+    RAM64(in=in, load=load1, address=lower6, out=out1); // 64 - 127
+    RAM64(in=in, load=load2, address=lower6, out=out2); // 128 - 
+    RAM64(in=in, load=load3, address=lower6, out=out3);
+    RAM64(in=in, load=load4, address=lower6, out=out4);
+    RAM64(in=in, load=load5, address=lower6, out=out5);
+    RAM64(in=in, load=load6, address=lower6, out=out6);
+    RAM64(in=in, load=load7, address=lower6, out=out7);
+    Mux8Way16(a=out0,b=out1,c=out2,d=out3,e=out4,f=out5,g=out6,h=out7,sel=higher3,out=out);    
 
 }
